@@ -61,7 +61,7 @@ TEMPLATES = [
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
-            'contextors': [
+            'context_processors': [  # Исправлено: contextors -> context_processors
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -99,6 +99,8 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # REST Framework
@@ -120,6 +122,12 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# Authentication
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_REDIRECT_URL = '/api/'
+LOGOUT_REDIRECT_URL = '/api/'
 
 # Celery
 CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
