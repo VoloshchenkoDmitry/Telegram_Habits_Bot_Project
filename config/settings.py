@@ -128,13 +128,3 @@ AUTH_USER_MODEL = 'users.User'
 
 LOGIN_REDIRECT_URL = '/api/'
 LOGOUT_REDIRECT_URL = '/api/'
-
-# Celery
-CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
-CELERY_RESULT_BACKEND = os.getenv('REDIS_URL', 'redis://localhost:6379')
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = TIME_ZONE
-
-# Telegram
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
