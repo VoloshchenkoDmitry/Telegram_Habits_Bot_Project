@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from .models import Habit
 
 
 class HabitValidator:
@@ -11,7 +12,6 @@ class HabitValidator:
         self._validate_related_habit_and_reward()
         self._validate_pleasant_habit()
         self._validate_related_habit_is_pleasant()
-        self._validate_periodicity()
 
     def _validate_execution_time(self):
         execution_time = self.data.get('execution_time')
@@ -44,11 +44,4 @@ class HabitValidator:
         if related_habit and not related_habit.is_pleasant:
             raise serializers.ValidationError({
                 'related_habit': 'В связанные привычки могут попадать только приятные привычки.'
-            })
-
-    def _validate_periodicity(self):
-        periodicity = self.data.get('periodicity', 'daily')
-        if periodicity not in ['daily', 'weekly']:
-            raise serializers.ValidationError({
-                'periodicity': 'Периодичность должна быть "daily" или "weekly".'
             })

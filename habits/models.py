@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
 
-
 class Habit(models.Model):
     PERIOD_CHOICES = [
         ('daily', 'Ежедневно'),
@@ -34,7 +33,8 @@ class Habit(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        verbose_name='Связанная привычка'
+        verbose_name='Связанная привычка',
+        related_name='related_habits'
     )
     periodicity = models.CharField(
         max_length=10,
@@ -49,7 +49,8 @@ class Habit(models.Model):
         verbose_name='Вознаграждение'
     )
     execution_time = models.PositiveIntegerField(
-        verbose_name='Время на выполнение (в секундах)'
+        verbose_name='Время на выполнение (в секундах)',
+        help_text='Время в секундах'
     )
     is_public = models.BooleanField(
         default=False,
@@ -63,16 +64,16 @@ class Habit(models.Model):
     class Meta:
         verbose_name = 'Привычка'
         verbose_name_plural = 'Привычки'
-        ordering = ['-id']
+        ordering = ['-created_at']
 
     def __str__(self):
         return f"{self.user}: {self.action} в {self.time}"
 
     def clean(self):
         if self.execution_time > 120:
-            raise ValidationError(
-                {'execution_time': 'Время выполнения не должно превышать 120 секунд.'}
-            )
+            raise ValidationError({
+                'execution_time': 'Время выполнения не должно превышать 120 секунд.'
+            })
 
         if self.related_habit and self.reward:
             raise ValidationError(
@@ -85,9 +86,9 @@ class Habit(models.Model):
             )
 
         if self.related_habit and not self.related_habit.is_pleasant:
-            raise ValidationError(
-                {'related_habit': 'В связанные привычки могут попадать только приятные привычки.'}
-            )
+            raise ValidationError({
+                'related_habit': 'В связанные привычки могут попадать только приятные привычки.'
+            })
 
     def save(self, *args, **kwargs):
         self.full_clean()

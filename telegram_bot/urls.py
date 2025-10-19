@@ -1,6 +1,10 @@
-from django.urls import path
-from .views import TelegramUserLinkView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import TelegramUserViewSet
+
+router = DefaultRouter()
+router.register('telegram', TelegramUserViewSet, basename='telegram')
 
 urlpatterns = [
-    path('telegram/link/', TelegramUserLinkView.as_view(), name='telegram-link'),
+    path('', include(router.urls)),
 ]

@@ -13,14 +13,11 @@ class HabitAdmin(admin.ModelAdmin):
         ('Основная информация', {
             'fields': ('user', 'place', 'time', 'action')
         }),
-        ('Тип и связь', {
-            'fields': ('is_pleasant', 'related_habit', 'periodicity')
+        ('Тип привычки', {
+            'fields': ('is_pleasant', 'related_habit', 'reward')
         }),
-        ('Вознаграждение и время', {
-            'fields': ('reward', 'execution_time')
-        }),
-        ('Видимость', {
-            'fields': ('is_public',)
+        ('Настройки', {
+            'fields': ('periodicity', 'execution_time', 'is_public')
         }),
         ('Даты', {
             'fields': ('created_at',)
